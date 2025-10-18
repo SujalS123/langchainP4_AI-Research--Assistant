@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = 'https://langchainp4-ai-research-assistant.onrender.com';
 
 export const sendQuery = async (query, options = {}) => {
   try {

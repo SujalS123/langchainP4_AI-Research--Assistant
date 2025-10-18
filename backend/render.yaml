@@ -5,7 +5,7 @@ services:
     env: python
     plan: free
     region: oregon
-    healthCheckPath: /docs
+    healthCheckPath: /
     autoDeploy: true
     
     # Build configuration
@@ -14,7 +14,7 @@ services:
       pip install -r requirements.txt
     
     # Start command
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 1
     
     # Environment variables
     envVars:
