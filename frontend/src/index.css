@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for smooth animations and glass morphism */
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  body {
+    @apply antialiased;
+  }
+}
+
+@layer components {
+  /* Glass morphism effect */
+  .glass {
+    @apply bg-white/20 backdrop-blur-md border border-white/30;
+  }
+  
+  /* Pastel button styles */
+  .btn-pastel {
+    @apply px-4 py-2 rounded-xl font-medium transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg;
+  }
+  
+  /* Smooth fade-in animation */
+  .fade-in {
+    animation: fadeIn 0.5s ease-out;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-pastel-lavender/30;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-pastel-purple/50 rounded-full hover:bg-pastel-purple/70;
+}
+
+/* Remove default styles for better control */
+* {
+  @apply box-border;
+}
+
+#root {
+  min-height: 100vh;
+}
