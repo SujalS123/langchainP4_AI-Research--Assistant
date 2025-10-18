@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.routes import query_router
 from fastapi.middleware.cors import CORSMiddleware
+import os
 
 app = FastAPI(
     title="AI Research Assistant API",
@@ -8,10 +9,14 @@ app = FastAPI(
     version="1.0.0"
 )
 
+# Get allowed origins from environment variable or use defaults
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000,http://localhost:5173").split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
+    allow_origins=allowed_origins,
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 

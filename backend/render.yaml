@@ -34,6 +34,8 @@ services:
         value: "10"
       - key: DEBUG_MODE
         value: "false"
+      - key: ALLOWED_ORIGINS
+        value: "http://localhost:3000,http://localhost:5173,https://langchain-p4-ai-research-assistant.vercel.app,https://langchainp4-ai-research-assistant.onrender.com"
       
       # External API Keys (set these in Render dashboard)
       - key: GOOGLE_API_KEY

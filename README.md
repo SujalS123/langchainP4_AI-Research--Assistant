@@ -322,7 +322,12 @@ graph TD
 - Docker & Docker Compose (optional)
 - Google API Key (for Gemini)
 
-### Option 1: Docker Compose (Recommended)
+### 🌐 **Live Demo (Production)**
+- **Backend API**: https://langchainp4-ai-research-assistant.onrender.com
+- **API Documentation**: https://langchainp4-ai-research-assistant.onrender.com/docs
+- **Health Check**: https://langchainp4-ai-research-assistant.onrender.com/health
+
+### Option 1: Docker Compose (Local Development)
 
 ```bash
 # Clone and navigate to project
@@ -381,6 +386,63 @@ npm install
 # Start the development server
 npm start
 ```
+
+### 🚀 **Production Deployment**
+
+#### Backend Deployment (Render.com)
+The backend is already deployed at: https://langchainp4-ai-research-assistant.onrender.com
+
+To deploy your own backend:
+1. Fork this repository
+2. Connect to Render.com
+3. Set your `GOOGLE_API_KEY` in Render dashboard
+4. Deploy automatically from the `render.yaml` configuration
+
+#### Frontend Deployment Options
+
+**Option 1: Netlify**
+```bash
+# Build the frontend
+cd frontend
+npm run build
+
+# Deploy to Netlify
+# 1. Drag and drop the 'dist' folder to netlify.com
+# 2. Or connect your GitHub repository to Netlify
+# 3. The 'netlify.toml' file will handle configuration automatically
+```
+
+**Option 2: Vercel**
+```bash
+# Deploy to Vercel
+# 1. Install Vercel CLI: npm i -g vercel
+# 2. Run: vercel --prod
+# 3. The 'vercel.json' file will handle configuration automatically
+```
+
+**Option 3: GitHub Pages**
+```bash
+# Build for GitHub Pages
+cd frontend
+npm run build
+
+# Deploy using gh-pages
+npm install -g gh-pages
+gh-pages -d dist
+```
+
+### 🔗 **Connecting Frontend to Production Backend**
+
+The frontend is already configured to connect to the deployed backend:
+```javascript
+// frontend/src/utils/api.js
+const API_BASE_URL = 'https://langchainp4-ai-research-assistant.onrender.com';
+```
+
+To connect to your own backend:
+1. Deploy your backend to Render.com
+2. Update `API_BASE_URL` in `frontend/src/utils/api.js`
+3. Redeploy the frontend
 
 ## 📝 API Documentation
 
