@@ -1,0 +1,97 @@
+services:
+  # AI Research Assistant Backend Service
+  - type: web
+    name: ai-research-assistant-backend
+    env: python
+    plan: free
+    region: oregon
+    healthCheckPath: /docs
+    autoDeploy: true
+    
+    # Build configuration
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r requirements.txt
+    
+    # Start command
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    
+    # Environment variables
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.5
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: PYTHONDONTWRITEBYTECODE
+        value: "1"
+      
+      # Application Configuration
+      - key: DEFAULT_MODEL
+        value: gemini-2.0-flash-exp
+      - key: DEFAULT_TEMPERATURE
+        value: "0.2"
+      - key: MAX_SEARCH_RESULTS
+        value: "10"
+      - key: DEBUG_MODE
+        value: "false"
+      
+      # External API Keys (set these in Render dashboard)
+      - key: GOOGLE_API_KEY
+        sync: false
+        description: "Google Gemini API key for AI model access"
+      
+      # Optional: Database Configuration (if using PostgreSQL)
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ai-research-db
+          property: connectionString
+        optional: true
+      
+      # Optional: Redis Configuration (if using Redis)
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: ai-research-redis
+          property: connectionString
+        optional: true
+
+# Optional: PostgreSQL Database for data persistence
+databases:
+  - name: ai-research-db
+    databaseName: research_assistant
+    user: research_user
+    plan: free
+    region: oregon
+    ipAllowList: []  # Allow all connections (adjust for production)
+
+# Optional: Redis for caching
+services:
+  - type: redis
+    name: ai-research-redis
+    plan: free
+    region: oregon
+    ipAllowList: []  # Allow all connections (adjust for production)
+    maxmemoryPolicy: allkeys-lru
+
+# Deployment hooks for additional setup
+hooks:
+  # Pre-build hook - runs before building the service
+  preBuild:
+    commands:
+      - python --version
+      - echo "Starting build for AI Research Assistant Backend"
+  
+  # Post-build hook - runs after building but before deploying
+  postBuild:
+    commands:
+      - echo "Build completed successfully"
+      - python -c "import app.main; print('Application imports successful')"
+
+# Notification settings
+notifications:
+  - type: email
+    address: your-email@example.com  # Update with your email
+    events:
+      - deploy.started
+      - deploy.succeeded
+      - deploy.failed
