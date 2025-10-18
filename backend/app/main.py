@@ -10,7 +10,18 @@ app = FastAPI(
 )
 
 # Get allowed origins from environment variable or use defaults
-allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000,http://localhost:5173").split(",")
+allowed_origins_env = os.getenv("ALLOWED_ORIGINS", "")
+if allowed_origins_env:
+    allowed_origins = [origin.strip() for origin in allowed_origins_env.split(",") if origin.strip()]
+else:
+    allowed_origins = [
+        "http://localhost:3000",
+        "http://localhost:5173", 
+        "https://langchain-p4-ai-research-assistant.vercel.app",
+        "https://langchainp4-ai-research-assistant.onrender.com"
+    ]
+
+print(f"Allowed origins: {allowed_origins}")  # Debug log
 
 app.add_middleware(
     CORSMiddleware,
@@ -18,6 +29,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 # Root endpoint
@@ -39,5 +51,10 @@ async def health_check():
         "service": "ai-research-assistant-backend",
         "version": "1.0.0"
     }
+
+# OPTIONS handler for CORS preflight
+@app.options("/api/query")
+async def options_handler():
+    return {"status": "ok"}
 
 app.include_router(query_router.router, prefix="/api")
