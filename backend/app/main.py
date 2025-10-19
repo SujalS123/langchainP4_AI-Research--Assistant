@@ -18,7 +18,9 @@ else:
         "http://localhost:3000",
         "http://localhost:5173", 
         "https://langchain-p4-ai-research-assistant.vercel.app",
-        "https://langchainp4-ai-research-assistant.onrender.com"
+        "https://langchain-p4-ai-research-assistant.vercel.app/",
+        "https://langchainp4-ai-research-assistant.onrender.com",
+        "https://langchainp4-ai-research-assistant.onrender.com/"
     ]
 
 print(f"Allowed origins: {allowed_origins}")  # Debug log
@@ -52,9 +54,9 @@ async def health_check():
         "version": "1.0.0"
     }
 
-# OPTIONS handler for CORS preflight
-@app.options("/api/query")
-async def options_handler():
-    return {"status": "ok"}
+# OPTIONS handler for CORS preflight - remove this as CORSMiddleware handles it
+# @app.options("/api/query")
+# async def options_handler():
+#     return {"status": "ok"}
 
 app.include_router(query_router.router, prefix="/api")
